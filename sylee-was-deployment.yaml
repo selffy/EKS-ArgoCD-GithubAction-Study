@@ -1,1 +1,30 @@
-
+# Deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sylee-was
+  name: sylee-was-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sylee-was
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sylee-was
+    spec:
+      containers:
+      - image: 559394926122.dkr.ecr.ap-northeast-2.amazonaws.com/sylee-was-ecr:0.4v
+        name: nginx
+        volumeMounts:
+        - name: efs-was-pv
+          mountPath: /was-efs
+      volumes:
+      - name: efs-was-pv
+        persistentVolumeClaim:
+          claimName: efs-was-claim
